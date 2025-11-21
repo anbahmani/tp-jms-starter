@@ -1,11 +1,12 @@
 version: '3.8'
 services:
   artemis:
-    image: apache/activemq-artemis:2.33.0
+    image: apache/activemq-artemis:latest
     container_name: artemis-broker
     environment:
       - ARTEMIS_USERNAME=admin
       - ARTEMIS_PASSWORD=admin
+      - ANONYMOUS_LOGIN=true
     ports:
       - "8161:8161"   # Console web
       - "61616:61616" # Port JMS
