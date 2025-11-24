@@ -13,9 +13,12 @@ public class ProducerApp {
              JMSContext context = cf.createContext(user, pass, JMSContext.AUTO_ACKNOWLEDGE)) {
 
             Queue queue = context.createQueue("demoQueue");
-            context.createProducer().send(queue, "Hello JMS with authentication!");
-            System.out.println("✅ Message envoyé sur demoQueue !");
-        } catch (JMSRuntimeException e) {
+            for (int i = 1; i <= 5; i++) {
+                String message = "{\"orderId\": " + i + ", \"status\": \"CREATED\"}";
+                context.createProducer().send(queue, message);
+                System.out.println("✅ Message envoyé : " + message);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

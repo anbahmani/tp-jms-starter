@@ -6,7 +6,7 @@ import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
 public class ConsumerApp {
     public static void main(String[] args) {
         String brokerURL = "tcp://localhost:61616";
-        String user = "admin"; // identifiant du docker-compose
+        String user = "admin";
         String pass = "admin";
 
         try (ActiveMQConnectionFactory cf = new ActiveMQConnectionFactory(brokerURL);
@@ -16,8 +16,11 @@ public class ConsumerApp {
             JMSConsumer consumer = context.createConsumer(queue);
 
             System.out.println("🟡 En attente de messages...");
-            String msg = consumer.receiveBody(String.class);
-            System.out.println("📩 Message reçu : " + msg);
+            while (true) {
+                String msg = consumer.receiveBody(String.class, 3000);
+                if (msg == null) break;
+                System.out.println("📩 Reçu : " + msg);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
